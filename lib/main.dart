@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:xdevgr3/My_second_page.dart';
+import 'package:xdevgr3/firebase/firebase_helper.dart';
+import 'package:xdevgr3/gloable.dart';
 import 'package:xdevgr3/mon_animation.dart';
 
 void main() {
@@ -36,6 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
   //variable
   TextEditingController mail = TextEditingController();
   TextEditingController pseudo = TextEditingController();
+  TextEditingController pass = TextEditingController();
   bool visible = true;
 
 
@@ -110,6 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
+                  controller: pass,
                     obscureText: visible,
                     decoration: InputDecoration(hintText: "Entrer le mot de passe",
                       prefixIcon: const Icon(Icons.lock),
@@ -135,12 +139,19 @@ class _MyHomePageState extends State<MyHomePage> {
               child: ElevatedButton(
                   child: const Text("Connexion"),
                   onPressed: () {
-                    print("connexion");
+                   FirebaseHelper().connexion(mail.text, pass.text).then((value) {
+                     setState(() {
+                       userConnected = value;
+                     });
+                     Navigator.push(
+                         context,
+                         MaterialPageRoute(
+                             builder: (context) => MySecondPage(email: mail,nickname: pseudo,)));
+                   }).catchError((onError){
+                     print("mot de passe erroné");
+                   });
 
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => MySecondPage(email: mail,nickname: pseudo,)));
+
                   }),
             ),
 
@@ -150,7 +161,16 @@ class _MyHomePageState extends State<MyHomePage> {
               child: TextButton(
                   child: const Text("Inscription"),
                   onPressed: () {
-                    print("Inscription");
+                    FirebaseHelper().inscription(pseudo.text, mail.text, pass.text).then((value) {
+                      setState(() {
+                        userConnected = value;
+                      });
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context)=>MySecondPage(nickname: pseudo)));
+                      
+                    }).catchError((onError){
+                      print("n'arrrive pas à s'inscrire");
+                    });
                   }),
             ),
           ]))
