@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:xdevgr3/My_second_page.dart';
+import 'package:xdevgr3/mon_animation.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,16 +33,15 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  //variable
+  TextEditingController mail = TextEditingController();
+  TextEditingController pseudo = TextEditingController();
+  bool visible = true;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -48,25 +49,112 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+      body:SingleChildScrollView(
+          child: Column(children: [
+
+        MyAnimation(
+          duree: 6,
+          child: Container(
+            height:200,
+            width: 400,
+
+            decoration: BoxDecoration(
+
+                  borderRadius:BorderRadius.circular(20),
+              image:const DecorationImage(
+                image:NetworkImage("https://media.gqmagazine.fr/photos/606c19c3a813725515a80944/16:9/w_1920,c_limit/mclarenarturaflux-11.jpeg"),
+              )
+            )
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+            /*pseudo*/
+            MyAnimation(
+              duree: 1,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                    controller: pseudo,
+                    decoration: InputDecoration(hintText: "Entrer le pseudo",
+                        prefixIcon: const Icon(Icons.person),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10)
+
+                        )),
+                ),
+              ),
+            ),
+
+
+            /*adresse mail*/
+            MyAnimation(
+              duree: 2,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                    controller: mail,
+                    decoration: InputDecoration(
+                      hintText: "Entrer l'adresse mail",
+                      prefixIcon: const Icon(Icons.mail),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))
+
+
+
+                    )
+                ),
+              ),
+            ),
+
+            /*mot de passe */
+            MyAnimation(
+              duree: 3,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                    obscureText: visible,
+                    decoration: InputDecoration(hintText: "Entrer le mot de passe",
+                      prefixIcon: const Icon(Icons.lock),
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.remove_red_eye),
+                          onPressed: (){
+                            setState(() {
+                              visible = !visible;
+                            });
+
+
+                          },
+                        ),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))
+
+                    )),
+              ),
+            ),
+
+            /*boutton de connexion*/
+            MyAnimation(
+              duree: 4,
+              child: ElevatedButton(
+                  child: const Text("Connexion"),
+                  onPressed: () {
+                    print("connexion");
+
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MySecondPage(email: mail,nickname: pseudo,)));
+                  }),
+            ),
+
+            /*inscription */
+            MyAnimation(
+              duree: 5,
+              child: TextButton(
+                  child: const Text("Inscription"),
+                  onPressed: () {
+                    print("Inscription");
+                  }),
+            ),
+          ]))
+
     );
   }
 }
