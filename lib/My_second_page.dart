@@ -1,5 +1,10 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:xdevgr3/firebase/firebase_helper.dart';
 import 'package:xdevgr3/gloable.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:xdevgr3/model/my_user.dart';
 class MySecondPage extends StatefulWidget {
 
   MySecondPage({super.key});
@@ -9,6 +14,68 @@ class MySecondPage extends StatefulWidget {
 }
 
 class _MySecondPageState extends State<MySecondPage> {
+  //variable
+  String? nameImage;
+  Uint8List? bytesImage;
+
+  //boite de dialogue
+  showContainerInfo(){
+    showDialog(
+      barrierDismissible: false,
+        context: context,
+        builder: (context){
+          return AlertDialog(
+            title: Text("Souhaitez utiliser cette image"),
+            content: Image.memory(bytesImage!),
+            actions: [
+              TextButton(
+                  onPressed: (){
+                    //enregistrer dans la base de donnée
+                    FirebaseHelper().uploadPicture(dossier: "PROFIL", nomImage: nameImage!, bytesImage: bytesImage!, uidUser: userConnected.uid).then((value) {
+                      setState(() {
+                        userConnected.avatar = value;
+                        Map<String,dynamic> data = {
+                          "AVATAR":userConnected.avatar
+                        };
+                        FirebaseHelper().updateUser(userConnected.uid, data);
+                        Navigator.pop(context);
+                      });
+
+                    });
+                  },
+                  child: Text("Validation")
+              ),
+              TextButton(
+                  onPressed: (){
+                    Navigator.pop(context);
+                  },
+                  child: Text("Annulation")
+              )
+            ],
+
+          );
+        }
+    );
+
+  }
+
+  //récupérer l'image
+  pickImage() async{
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      withData: true,
+      type: FileType.image
+    );
+    if(result !=null){
+      nameImage = result.files.first.name;
+      bytesImage = result.files.first.bytes;
+      //boite de dialogue
+      showContainerInfo();
+    }
+
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,9 +84,15 @@ class _MySecondPageState extends State<MySecondPage> {
             width: MediaQuery.of(context).size.width * 0.5,
             child: Column(
               children: [
-                CircleAvatar(
-                  radius:60,
-                  backgroundImage: NetworkImage(userConnected.avatar!)
+                GestureDetector(
+                  onTap: (){
+                    pickImage();
+
+                  },
+                  child: CircleAvatar(
+                    radius:60,
+                    backgroundImage: NetworkImage(userConnected.avatar!)
+                  ),
                 ),
 
                 Text(userConnected.pseudo),
@@ -31,7 +104,34 @@ class _MySecondPageState extends State<MySecondPage> {
         appBar: AppBar(
           title: Text("nouveelle page")
         ),
-        body: Text("Je suis dans la nouvelle page")
+        body: StreamBuilder(
+          stream: FirebaseHelper().mesUtilisateurs.snapshots(),
+          builder: (context,snap){
+            if(snap.hasData == null){
+              return Text("Aucune info");
+            }
+            else
+              {
+                List documents = snap.data!.docs;
+                return ListView.builder(
+                    itemCount: documents.length,
+                    itemBuilder: (context,index){
+                      MyUser otherUser = MyUser.bdd(documents[index]);
+                      return Card(
+                        color: Colors.amber,
+                        elevation: 5,
+                        child: ListTile(
+                          title: Text(otherUser.email),
+                          subtitle: Text(otherUser.pseudo),
+                          leading: Image.network(otherUser.avatar!),
+                        ),
+                      );
+                    }
+                );
+              }
+
+          },
+        )
     );;
   }
 }

@@ -4,6 +4,7 @@ import 'package:xdevgr3/firebase/firebase_helper.dart';
 import 'package:xdevgr3/gloable.dart';
 import 'package:xdevgr3/mon_animation.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:xdevgr3/permission_photo.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -11,6 +12,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  PermissionPhoto().init();
   runApp(const MyApp());
 }
 
