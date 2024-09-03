@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:xdevgr3/gloable.dart';
 class MySecondPage extends StatefulWidget {
-  TextEditingController? email;
-  TextEditingController nickname;
-  MySecondPage({super.key, this.email, required this.nickname});
+
+  MySecondPage({super.key});
 
   @override
   State<MySecondPage> createState() => _MySecondPageState();
@@ -19,14 +19,17 @@ class _MySecondPageState extends State<MySecondPage> {
               children: [
                 CircleAvatar(
                   radius:60,
-                  backgroundImage: NetworkImage("https://cdn.automobile-propre.com/uploads/2022/03/foxtron-model-e.jpg")
+                  backgroundImage: NetworkImage(userConnected.avatar!)
                 ),
-                Text(widget.nickname.text),
-                Text(widget.email!.text),
+
+                Text(userConnected.pseudo),
+
+                Text(userConnected.email)
+
               ],
             )),
         appBar: AppBar(
-          title: Text(widget.email!.text),
+          title: Text("nouveelle page")
         ),
         body: Text("Je suis dans la nouvelle page")
     );;

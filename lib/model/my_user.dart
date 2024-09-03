@@ -1,5 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:xdevgr3/gloable.dart';
 
 class MyUser {
   late String uid;
@@ -16,7 +17,7 @@ class MyUser {
 
   MyUser(){
     uid="";
-    avatar="";
+    avatar=null;
     pseudo="";
     email = "";
     connected = false;
@@ -25,13 +26,13 @@ class MyUser {
 
   MyUser.bdd(DocumentSnapshot documentSnapshot){
       uid = documentSnapshot.id;
-      Map<String,dynamic> map = documentSnapshot as Map<String,dynamic>;
+      Map<String,dynamic> map = documentSnapshot.data() as Map<String,dynamic>;
       connected = true;
       email = map["EMAIL"];
       pseudo = map["PSEUDO"];
       String? provisoire = map["AVATAR"];
       if(provisoire == null){
-        avatar = "";
+        avatar = imageDefault;
       }
       else
         {

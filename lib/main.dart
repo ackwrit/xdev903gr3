@@ -3,8 +3,14 @@ import 'package:xdevgr3/My_second_page.dart';
 import 'package:xdevgr3/firebase/firebase_helper.dart';
 import 'package:xdevgr3/gloable.dart';
 import 'package:xdevgr3/mon_animation.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -146,7 +152,7 @@ class _MyHomePageState extends State<MyHomePage> {
                      Navigator.push(
                          context,
                          MaterialPageRoute(
-                             builder: (context) => MySecondPage(email: mail,nickname: pseudo,)));
+                             builder: (context) => MySecondPage()));
                    }).catchError((onError){
                      print("mot de passe erroné");
                    });
@@ -164,12 +170,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     FirebaseHelper().inscription(pseudo.text, mail.text, pass.text).then((value) {
                       setState(() {
                         userConnected = value;
-                      });
+
                       Navigator.push(context, MaterialPageRoute(
-                          builder: (context)=>MySecondPage(nickname: pseudo)));
-                      
-                    }).catchError((onError){
-                      print("n'arrrive pas à s'inscrire");
+                          builder: (context)=>MySecondPage()));
+                      });
                     });
                   }),
             ),
