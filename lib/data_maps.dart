@@ -1,7 +1,10 @@
 import "package:flutter/material.dart";
 import "package:geolocator/geolocator.dart";
+import "package:xdevgr3/gloable.dart";
 import "package:xdevgr3/map_view.dart";
 import "package:xdevgr3/permission_gps.dart";
+
+import "firebase/firebase_helper.dart";
 
 
 
@@ -33,6 +36,11 @@ class _DataMapsState extends State<DataMaps> {
           }
           else {
             Position coordonnee = resultat.data!;
+            Map<String,dynamic> data = {
+              "GPS":coordonnee
+            };
+            FirebaseHelper().updateUser(userConnected.uid,data);
+            userConnected.coordonnee = coordonnee;
             return MapView(coordonee : coordonnee);
           }
 

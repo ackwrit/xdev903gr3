@@ -1,5 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:xdevgr3/gloable.dart';
 
 class MyUser {
@@ -8,6 +9,8 @@ class MyUser {
   late String pseudo;
   late String email;
   late bool connected;
+  Position? coordonnee;
+
 
 
 
@@ -21,6 +24,7 @@ class MyUser {
     pseudo="";
     email = "";
     connected = false;
+    coordonnee=null;
   }
 
 
@@ -37,6 +41,14 @@ class MyUser {
       else
         {
           avatar = provisoire;
+        }
+      GeoPoint? point = map["GPS"];
+      if(point == null){
+        coordonnee = null;
+      }
+      else
+        {
+          coordonnee = Position(longitude: point!.longitude, latitude: point!.latitude, timestamp: DateTime.now(), accuracy: 0, altitude: 0, altitudeAccuracy: 0, heading: 0, headingAccuracy: 0, speed: 0, speedAccuracy: 0);
         }
   }
 }
