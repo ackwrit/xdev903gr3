@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:xdevgr3/firebase/firebase_helper.dart';
 import 'package:xdevgr3/gloable.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:xdevgr3/map_view.dart';
 import 'package:xdevgr3/model/my_user.dart';
 class MySecondPage extends StatefulWidget {
 
@@ -104,38 +105,7 @@ class _MySecondPageState extends State<MySecondPage> {
         appBar: AppBar(
           title: Text("nouveelle page")
         ),
-        body: StreamBuilder(
-          stream: FirebaseHelper().mesUtilisateurs.snapshots(),
-          builder: (context,snap){
-            if(snap.hasData == null){
-              return const Text("Aucune info");
-
-
-
-
-            }
-            else
-              {
-                List documents = snap.data!.docs;
-                return ListView.builder(
-                    itemCount: documents.length,
-                    itemBuilder: (context,index){
-                      MyUser otherUser = MyUser.bdd(documents[index]);
-                      return Card(
-                        color: Colors.amber,
-                        elevation: 5,
-                        child: ListTile(
-                          title: Text(otherUser.email),
-                          subtitle: Text(otherUser.pseudo),
-                          leading: Image.network(otherUser.avatar!),
-                        ),
-                      );
-                    }
-                );
-              }
-
-          },
-        )
+        body: MapView()
     );;
   }
 }
