@@ -39,6 +39,10 @@ dependencies:
   firebase_auth:
   firebase_storage:
   cloud_firestore:
+  file_picker:
+  permission_handler:
+  geolocator:
+  google_maps_flutter:
 
 dev_dependencies:
   flutter_test:
