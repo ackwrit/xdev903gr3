@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:xdevgr3/model/my_user.dart';
 
 class FirebaseHelper{
@@ -71,6 +72,21 @@ deleteUser(String uid){
 
 
 //uploader des images
+ Future <String> uploadPicture({required String dossier, required String nomImage , required Uint8List bytesImage , required String uidUser}) async{
+   //dépot de l'image dans la base de donnée
+   TaskSnapshot snapshot = await mesStorages.ref("$dossier/$uidUser/$nomImage").putData(bytesImage!);
+   //récupératon de l'url
+   String urlImage = await snapshot.ref.getDownloadURL();
+   ////
+
+
+
+
+
+   return urlImage;
+
+
+}
 
 
 

@@ -108,7 +108,11 @@ class _MySecondPageState extends State<MySecondPage> {
           stream: FirebaseHelper().mesUtilisateurs.snapshots(),
           builder: (context,snap){
             if(snap.hasData == null){
-              return Text("Aucune info");
+              return const Text("Aucune info");
+
+
+
+
             }
             else
               {
