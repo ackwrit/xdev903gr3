@@ -15,7 +15,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   PermissionPhoto().init();
-  PermissionGps().init();
+
   runApp(const MyApp());
 }
 

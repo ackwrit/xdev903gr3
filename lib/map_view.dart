@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapView extends StatefulWidget {
-  const MapView({super.key});
+  Position coordonee;
+  const MapView({super.key,required coordonee});
 
   @override
   State<MapView> createState() => _MapViewState();
@@ -13,14 +14,26 @@ class MapView extends StatefulWidget {
 class _MapViewState extends State<MapView> {
   //variable
   Completer<GoogleMapController> completer = Completer();
+  late CameraPosition MaCamera;
+
+  @override
+  void iniState(){
+    maCamera = CameraPosition(target: LatLng(widget.coordonee.lattitude,widget.coordonee.longitude),zoom : 14)
+    super.iniState();
+  }
   @override
   Widget build(BuildContext context) {
     return GoogleMap(
-        initialCameraPosition: CameraPosition(target: LatLng(	35.689487, 139.691706),zoom: 15),
-      onMapCreated: (controller){
+      myLocationButtonEnabled: true,
+      myLocationEnabled: true,
+        initialCameraPosition: maCamera,
+      onMapCreated: (controller) async{
+        String newStyle = await DefaultAssetBundle.of(context).loadString("lib/mapstyle.json");
+        controller.setMapStyle(newStyle);
           completer.complete(controller);
 
       },
+
     );
   }
 }

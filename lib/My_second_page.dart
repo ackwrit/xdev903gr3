@@ -1,6 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:xdevgr3/data_maps.dart';
 import 'package:xdevgr3/firebase/firebase_helper.dart';
 import 'package:xdevgr3/gloable.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -105,7 +106,7 @@ class _MySecondPageState extends State<MySecondPage> {
         appBar: AppBar(
           title: Text("nouveelle page")
         ),
-        body: MapView()
+        body: DataMaps(),
     );;
   }
 }
