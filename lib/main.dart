@@ -4,7 +4,6 @@ import 'package:xdevgr3/firebase/firebase_helper.dart';
 import 'package:xdevgr3/gloable.dart';
 import 'package:xdevgr3/mon_animation.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:xdevgr3/permission_gps.dart';
 import 'package:xdevgr3/permission_photo.dart';
 import 'firebase_options.dart';
 
@@ -129,7 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     decoration: InputDecoration(hintText: "Entrer le mot de passe",
                       prefixIcon: const Icon(Icons.lock),
                         suffixIcon: IconButton(
-                          icon: Icon(Icons.remove_red_eye),
+                          icon: const Icon(Icons.remove_red_eye),
                           onPressed: (){
                             setState(() {
                               visible = !visible;
@@ -153,11 +152,12 @@ class _MyHomePageState extends State<MyHomePage> {
                    FirebaseHelper().connexion(mail.text, pass.text).then((value) {
                      setState(() {
                        userConnected = value;
+                       Navigator.push(
+                           context,
+                           MaterialPageRoute(
+                               builder: (context) => MySecondPage()));
                      });
-                     Navigator.push(
-                         context,
-                         MaterialPageRoute(
-                             builder: (context) => MySecondPage()));
+
                    }).catchError((onError){
                      print("mot de passe erroné");
                    });

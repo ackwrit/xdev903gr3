@@ -18,6 +18,7 @@ class FirebaseHelper{
  Future <MyUser>inscription(String pseudo, String email , String password) async {
    UserCredential credential = await auth.createUserWithEmailAndPassword(email: email, password: password);
    String uid = credential.user!.uid;
+
    Map<String,dynamic> data ={
      "EMAIL":email,
      "PSEUDO":pseudo

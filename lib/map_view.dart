@@ -1,11 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapView extends StatefulWidget {
   Position coordonee;
-  const MapView({super.key,required coordonee});
+  MapView({super.key,required this.coordonee});
 
   @override
   State<MapView> createState() => _MapViewState();
@@ -14,12 +15,12 @@ class MapView extends StatefulWidget {
 class _MapViewState extends State<MapView> {
   //variable
   Completer<GoogleMapController> completer = Completer();
-  late CameraPosition MaCamera;
+  late CameraPosition maCamera;
 
   @override
-  void iniState(){
-    maCamera = CameraPosition(target: LatLng(widget.coordonee.lattitude,widget.coordonee.longitude),zoom : 14)
-    super.iniState();
+  void iniSttate(){
+    maCamera = CameraPosition(target: LatLng(widget.coordonee.latitude,widget.coordonee.longitude),zoom : 14);
+    super.initState();
   }
   @override
   Widget build(BuildContext context) {
